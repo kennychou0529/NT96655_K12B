@@ -1,0 +1,5 @@
+SCC = This is a Source Code Control file
+
+[ecos.mak]
+SCC_Aux_Path = "\\Oadfs1c.novatek.com.tw\Public\SCS\iHome\IM\NT96432\NT96650VSS"
+SCC_Project_Name = "$/MainCode/DesignIn/CarDV_WIFI/ThirdParty/eCos/include/pkgconf", YRFHAAAA
