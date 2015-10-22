@@ -76,6 +76,7 @@ INT32 UIFlowWndWiFiPhoto_OnExePhotoCapture(VControl *pCtrl, UINT32 paramNum, UIN
 
         return NVTEVT_CONSUME;
     }
+	debug_msg("magic_PhotoCapture2\r\n");
     FlowPhoto_DoCapture();
 
     return NVTEVT_CONSUME;

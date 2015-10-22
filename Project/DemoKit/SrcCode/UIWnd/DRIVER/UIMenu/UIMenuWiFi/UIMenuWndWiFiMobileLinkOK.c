@@ -42,6 +42,9 @@ CTRL_LIST_END
 char StringMacBuf[32] = {0};
 extern BOOL g_bgsensor;
 extern  BOOL     gWifiStaus;
+static UINT8 LcdFlag;
+static UINT8 LcdIsWifiModeOn;
+
 
 //----------------------UIMenuWndWiFiMobileLinkOKCtrl Event---------------------------
 INT32 UIMenuWndWiFiMobileLinkOK_OnOpen(VControl *, UINT32, UINT32 *);
@@ -161,7 +164,8 @@ extern char gLastMacAddr[];
 INT32 UIMenuWndWiFiMobileLinkOK_OnOpen(VControl *pCtrl, UINT32 paramNum, UINT32 *paramArray)
 {
     static char buf1[32] = {0}, buf2[32] = {0} ;
-debug_msg("####   UIMenuWndWiFiMobileLinkOK_OnOpen\r\n");
+	
+    debug_msg("####   UIMenuWndWiFiMobileLinkOK_OnOpen\r\n");
     sprintf(buf1,"WiFi Connected");
     UxStatic_SetData(&UIMenuWndWiFiMobileLinkOK_StaticTXT_LinkStsCtrl,STATIC_VALUE,Txt_Pointer(buf1));
     sprintf(StringMacBuf," MAC : %s",UINet_GetConnectedMAC());
@@ -182,6 +186,14 @@ debug_msg("####   UIMenuWndWiFiMobileLinkOK_OnOpen\r\n");
 
     WifiCmd_ReceiveCmd(TRUE);
     TurnOnWifiLed();
+	
+    LcdFlag = SysGetFlag(FL_LCDOFF);
+	if( LcdFlag != LCDOFF_ON )
+	{
+		LcdIsWifiModeOn = 1;
+		Ux_SendEvent(&UISetupObjCtrl, NVTEVT_EXE_LCDOFF, 1, LCDOFF_ON);
+		debug_msg("magic_20151022_1\r\n");
+	}
     
     Ux_DefaultEvent(pCtrl,NVTEVT_OPEN_WINDOW,paramNum,paramArray);
     return NVTEVT_CONSUME;
@@ -232,14 +244,14 @@ INT32 UIMenuWndWiFiMobileLinkOK_OnKeyenter(VControl *pCtrl, UINT32 paramNum, UIN
 	UINT32 uiKeyAct;
 	
 	 uiKeyAct = paramNum ? paramArray[0] : 0;
-
+	debug_msg("UIMenuWndWiFiMobileLinkOK_OnKeyenter****************************************************ERIC_DEBUG\n\r");
     switch (uiKeyAct)
     {
     case NVTEVT_KEY_PRESS:
 		 if(gMovData.State==MOV_ST_REC)
-                  {
-                    FlowMovie_StopRec();
-                   }
+         {
+         	FlowMovie_StopRec();
+         }
 		if(UI_GetData(FL_WIFI_LINK)==WIFI_LINK_OK)
             {   //change to normal mode for close app
                 Ux_PostEvent(NVTEVT_SYSTEM_MODE, 2, System_GetState(SYS_STATE_CURRMODE),SYS_SUBMODE_NORMAL);
@@ -258,7 +270,15 @@ INT32 UIMenuWndWiFiMobileLinkOK_OnKeyenter(VControl *pCtrl, UINT32 paramNum, UIN
                 break;
     	}
 				
-			
+	if(LcdIsWifiModeOn == 1)
+	{
+		LcdIsWifiModeOn = 0;
+		if(SysGetFlag(FL_LCDOFF) == LCDOFF_ON )
+		{
+			Ux_SendEvent(&UISetupObjCtrl, NVTEVT_EXE_LCDOFF, 1, LcdFlag);
+			debug_msg("magic_20151022_2\r\n");
+		}
+	}
    
     return NVTEVT_CONSUME;
 }
@@ -269,7 +289,7 @@ INT32 UIMenuWndWiFiMobileLinkOK_OnKeyShutter2(VControl *pCtrl, UINT32 paramNum, 
 	UINT32 uiKeyAct;
 	INT32 curMode = System_GetState(SYS_STATE_CURRMODE);
 	 uiKeyAct = paramNum ? paramArray[0] : 0;
-     //debug_msg("UIMenuWndWiFiMobileLinkOK_OnKeyShutter2****************************************************ERIC_DEBUG\n\r");//ERIC_DEBUG
+     debug_msg("UIMenuWndWiFiMobileLinkOK_OnKeyShutter2****************************************************ERIC_DEBUG\n\r");//ERIC_DEBUG
 
     switch (uiKeyAct)
     {
@@ -339,6 +359,7 @@ INT32 UIMenuWndWiFiMobileLinkOK_Authorized_OK(VControl *pCtrl, UINT32 paramNum, 
 
 INT32 UIMenuWndWiFiMobileLinkOK_OnExePhotoCapture(VControl *pCtrl, UINT32 paramNum, UINT32 *paramArray)
 {
+	debug_msg("magic_PhotoCapture1\r\n");
     return UIFlowWndWiFiPhoto_OnExePhotoCapture(pCtrl, paramNum, paramArray);
 }
 INT32 UIMenuWndWiFiMobileLinkOK_OnUpdateInfo(VControl *pCtrl, UINT32 paramNum, UINT32 *paramArray)

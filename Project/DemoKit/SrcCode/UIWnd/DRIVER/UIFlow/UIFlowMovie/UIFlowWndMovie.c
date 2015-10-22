@@ -587,12 +587,12 @@ INT32 UIFlowWndMovie_OnOpen(VControl *pCtrl, UINT32 paramNum, UINT32 *paramArray
 	   	  }  
 	      }//Eric 20150905¡ª1 end
 	     else
+	     {
+	     	if(gWifiStaus==FALSE)
 	     	{
-	     	    if(gWifiStaus==FALSE)
-	     	    	{
-	     	    	gWifiStaus=TRUE;
-			 Ux_PostEvent(NVTEVT_KEY_SHUTTER2, 1, NVTEVT_KEY_PRESS);
-	     	    	}
+	     	 	gWifiStaus=TRUE;
+			 	Ux_PostEvent(NVTEVT_KEY_SHUTTER2, 1, NVTEVT_KEY_PRESS);
+	     	}
 		 }
 #if 0
  if(firstpoweron==TRUE)   //Eric 20150905¡ª1 begin

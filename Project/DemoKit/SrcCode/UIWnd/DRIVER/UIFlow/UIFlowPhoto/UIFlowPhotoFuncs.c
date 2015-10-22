@@ -122,12 +122,14 @@ void FlowPhoto_DoCapture(void)
     switch(SysGetFlag(FL_CONTINUE_SHOT))
     {
       case CONTINUE_SHOT_OFF:
+	  	debug_msg("magic_PhotoCapture3\r\n");
            UI_SetData(FL_ContShotIndex, CONT_SHOT_OFF);
            // update DCF Folder/File name
            FlowDCF_UpdateName();
            Ux_SendEvent(&CustomPhotoObjCtrl, NVTEVT_EXE_CAPTURE_START,1, ON_CAPTURE_SINGLE);
         break;
       case CONTINUE_SHOT_ON:
+	  	debug_msg("magic_PhotoCapture4\r\n");
            UI_SetData(FL_ContShotIndex, CONT_SHOT_10);
            // update DCF Folder/File name
            FlowDCF_UpdateName();
