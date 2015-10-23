@@ -32,7 +32,7 @@
 //char gFWExternalVersion[33] = "DECAIWIFI.20150504.V001";
 //char gFWExternalVersion[33] = "DECAIWIFI.20150623.V001";
 //char gFWExternalVersion[33] = "FHD660020150716R004DC";
-char gFWExternalVersion[33] =  "2015.09.29 V1.0";
+char gFWExternalVersion[33] =  "2015.10.23 V1.0";
 char* Prj_GetVersionString()
 {
     return gFWExternalVersion;

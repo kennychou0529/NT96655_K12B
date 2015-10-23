@@ -1958,7 +1958,7 @@ INT32 UIFlowWndMovie_GsensorTrig(VControl *pCtrl, UINT32 paramNum, UINT32 *param
      }
     return NVTEVT_CONSUME;
 }
-
+#if 1
 //eric@20150821-¼ä¸ôÂ¼Ïñbegin
 INT32 UIFlowWndMovie_RecModeTrig(VControl *pCtrl, UINT32 paramNum, UINT32 *paramArray)
 {
@@ -1985,6 +1985,38 @@ INT32 UIFlowWndMovie_RecModeTrig(VControl *pCtrl, UINT32 paramNum, UINT32 *param
     }
 }
 //eric@20150821-¼ä¸ôÂ¼Ïñ end
+#else
+INT32 UIFlowWndMovie_RecModeTrig(VControl *pCtrl, UINT32 paramNum, UINT32 *paramArray)
+{
+    if (paramArray[0] == 0)
+    {
+        debug_msg("stop lapse recording  ***************************************\r\n");  
+        Ux_SendEvent(pCtrl, NVTEVT_KEY_SHUTTER2, 1, NVTEVT_KEY_PRESS);//stop rec
+        SysSetFlag(FL_MOVIE_TIMELAPSE_REC, MOVIE_TIMELAPSEREC_OFF);
+        
+        if ( FALSE == AE_Wait_Stable(3, 60) )
+                    DBG_ERR("Movie one seocond EVENT: AE do not stable\r\n");
+		
+		UxCtrl_SetShow(&UIFlowWndMovie_Status_TimeLapesCtrl, FALSE);
+        debug_msg("start normal recording  ***************************************\r\n");
+        Ux_SendEvent(pCtrl, NVTEVT_KEY_SHUTTER2, 1, NVTEVT_KEY_PRESS);//start rec
+    }
+    else if (paramArray[0] == 1)
+    {
+        debug_msg(" stop normal recording  ****************************************\r\n");
+        SysSetFlag(FL_MOVIE_TIMELAPSE_REC, MOVIE_TIMELAPSEREC_500MS);
+        Ux_SendEvent(pCtrl, NVTEVT_KEY_SHUTTER2, 1, NVTEVT_KEY_PRESS);//stop rec
+        
+        if ( FALSE == AE_Wait_Stable(3, 60) )
+                    DBG_ERR("Movie one seocond EVENT: AE do not stable\r\n");
+      
+        //start lapse recording
+        debug_msg("start lapse recording  ****************************************\r\n");
+        Ux_SendEvent(pCtrl, NVTEVT_KEY_SHUTTER2, 1, NVTEVT_KEY_PRESS);//start rec
+   
+    }
+}
+#endif
 
 
 //----------------------UIFlowWndMovie_Static_cameraCtrl Event---------------------------

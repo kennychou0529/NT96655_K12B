@@ -52,10 +52,10 @@ extern BOOL DevCtrl_IsACCPoerOn(void);
 #define KEYSCAN_GPS_DISABLED  0
 
 #if 1
- static BOOL g_bLapseRecFlag= FALSE; //eric@2015021
+BOOL g_bLapseRecFlag = FALSE;
 #define LAPSE_REC_TRIG_VALUE   (17)  //eric@2015021
-#define GSENSOR_STATIC_COUNTER (9000) //(9000)//eric@2015021
-#define GSENSOR_MOTION_COUNTER (100)//(100)//eric@2015021
+#define GSENSOR_STATIC_COUNTER (3000) //(9000)//eric@2015021
+#define GSENSOR_MOTION_COUNTER (1)//(100)//eric@2015021
 #endif
 
 static volatile UINT32  g_uiKeyScanAutoLcdoffCnt;
@@ -72,7 +72,7 @@ static UINT32   uiSystemGpsoffTime     = KEYSCAN_GPS_DISABLED;
 extern BOOL g_bWifistaus;//ERIC EDIT 0909-1
 static BOOL bDetGsensorStatus = FALSE;
 static BOOL bGsensorFirst = FALSE;
-  static BOOL bDetMOVIStatus = FALSE;
+static BOOL bDetMOVIStatus = FALSE;
 #define FIVE_MINUTES    300
 #define HALF_AN_HOUR  1800
 
@@ -90,7 +90,7 @@ int SX_TIMER_DET_DELAYOFF_ID = -1;
 int SX_TIMER_DET_GPS_ID = -1;
 int SX_TIMER_DET_DELAYSHUTDOWN = -1;
 
-
+INT32 nLapseRecLedOffCounter = 0;//vincent@20150919-6
 
 void GxCustom_DetAutoLcdoff(void);
 void GxCustom_DetDelayoff(void);
@@ -722,9 +722,9 @@ void UI_MYDetGsensorStatus(void)
     static short prev_x= 0,prev_y= 0,prev_z= 0;
     static BOOL xyz_first = FALSE;
     INT32 xyz;
+	
     if(UI_GetData(FL_GSENSOR)!=GSENSOR_OFF)
     {
-        //DA380
         mir3da_read_data(&x,&y,&z);
         if(xyz_first == FALSE)
         {
@@ -733,48 +733,42 @@ void UI_MYDetGsensorStatus(void)
             prev_y = y;
             prev_z = z;
         }
-	  //debug_msg("## DA380  abs_x=%4d ,abs_y=%4d, abs_z=%4d, x=%4d, y=%4d,z=%4d  %d\r\n",abs(x-prev_x ),abs(y-prev_y ),abs(z-prev_z ),x,y,z,Get_GSensorSensitivity());
 
-        //Rec-->det rot-->stop Rec-->rot fun-->Rec
-        //if(UI_GetData(FL_WIFI_MOVIE_FMT) == WIFI_RTSP_REC ||
-           //gMovData.State == MOV_ST_REC )
-            {
+        {
             xyz = Get_GSensorSensitivity();
 		
             if ((abs(x-prev_x )> xyz)||
                 (abs(y-prev_y )> xyz)||
                 (abs(z-prev_z )> xyz))
             {
-                debug_msg((">>>>DA380 gsensor-move-----\r\n"));
-	    //if (SysGetFlag(FL_MOVIE_TIMELAPSE_REC) != MOVIE_TIMELAPSEREC_500MS)
-	         if(UI_GetData(FL_WIFI_MOVIE_FMT) == WIFI_RTSP_REC ||gMovData.State == MOV_ST_REC )
-                  Ux_PostEvent(NVTRET_PROTECT, 0);
+	         	if(UI_GetData(FL_WIFI_MOVIE_FMT) == WIFI_RTSP_REC ||gMovData.State == MOV_ST_REC )
+	         	{
+                 	Ux_PostEvent(NVTRET_PROTECT, 0);
+	         	}
             }
-            }
+       }
+		
 	  if (SysGetFlag(FL_MOVIE_PARKING) == MOVIE_PARKING_ON)
-	         {
-	       if ((abs(x-prev_x )> LAPSE_REC_TRIG_VALUE)||
+	  {
+	  		if ((abs(x-prev_x )> LAPSE_REC_TRIG_VALUE)||
                  (abs(y-prev_y )> LAPSE_REC_TRIG_VALUE)||
                  (abs(z-prev_z )> LAPSE_REC_TRIG_VALUE))
-                 {
-                   debug_msg("## DA380  abs_x=%4d ,abs_y=%4d, abs_z=%4d, x=%4d, y=%4d,z=%4d  \r\n",abs(x-prev_x ),abs(y-prev_y ),abs(z-prev_z ),x,y,z);
-                   g_bLapseRecFlag = TRUE;
-		      debug_msg("#####0000000#########g_bLapseRecFlag:%d\r\n",g_bLapseRecFlag);
-                 }
-              else
-                {
-                   g_bLapseRecFlag = FALSE;
-		     //debug_msg("## DA380  abs_x=%4d ,abs_y=%4d, abs_z=%4d, x=%4d, y=%4d,z=%4d  \r\n",abs(x-prev_x ),abs(y-prev_y ),abs(z-prev_z ),x,y,z);
-		     //debug_msg("##################g_bLapseRecFlag:%d\r\n",g_bLapseRecFlag);	   
-                 }
-	       	}  
-      }
-        prev_x = x;
-        prev_y = y;
-        prev_z = z;
+       		{
+       			g_bLapseRecFlag = TRUE;
+       		}
+       		else
+       		{
+            	g_bLapseRecFlag = FALSE;
+       		}
+	   }  
+	}
+	
+     prev_x = x;
+     prev_y = y;
+     prev_z = z;
 
 }
-
+#if 1
 void UI_DetGsensor(void)
 {
     static UINT32 staticCounter = 0;
@@ -811,8 +805,9 @@ void UI_DetGsensor(void)
         	           							 if (staticCounter > GSENSOR_STATIC_COUNTER)//start time lapse recording
         	            							{
         	                							Ux_PostEvent(NVTEVT_RECORDING_MODE_TRIG, 1, 1);
-											bDetMOVIStatus = TRUE;
-        	           	            					} 
+														bDetMOVIStatus = TRUE;
+														nLapseRecLedOffCounter = 30;
+        	           	            				} 
                         						}
     			    					}
     			    			else
@@ -820,13 +815,14 @@ void UI_DetGsensor(void)
     			                       if (g_bLapseRecFlag)
                     	               {
                         		                  motionCounter++;
-					                  DetGsensorCounter++;
+					                  //DetGsensorCounter++;
     		            				     staticCounter = 0;
-    		            		               if ((motionCounter <GSENSOR_MOTION_COUNTER )&&(DetGsensorCounter==2))//start normal recording
+    		            		               if (motionCounter > GSENSOR_MOTION_COUNTER )//start normal recording
     		            		                {
-    		            		                   DetGsensorCounter=0;
-    		                		            Ux_PostEvent(NVTEVT_RECORDING_MODE_TRIG, 1, 0);
-						           bDetMOVIStatus = TRUE;
+    		            		                   //DetGsensorCounter=0;
+												   GPIOMap_TurnOnLCDBacklight();
+    		                		            	Ux_PostEvent(NVTEVT_RECORDING_MODE_TRIG, 1, 0);
+						           					bDetMOVIStatus = TRUE;
     		            			          }	
                     	           }
     			    }
@@ -845,6 +841,56 @@ void UI_DetGsensor(void)
         }
     }
 }
+#else
+void UI_DetGsensor(void)
+{
+    static UINT32 staticCounter = 0;
+    static UINT32 motionCounter = 0;
+	
+   UI_MYDetGsensorStatus();
+   
+   if (System_GetState(SYS_STATE_CURRMODE) == PRIMARY_MODE_MOVIE)
+   {	 
+         
+
+        	switch(gMovData.State)	
+        	{
+        	 	case MOV_ST_REC:
+		     	case MOV_ST_REC|MOV_ST_ZOOM:
+					if(UI_GetData(FL_GSENSOR)!= GSENSOR_OFF)
+					{
+			 	 		if (SysGetFlag(FL_MOVIE_PARKING) == MOVIE_PARKING_ON)
+			 	 		{
+    			         	if (!g_bLapseRecFlag)
+                         	{
+                        		staticCounter++;
+        	            		motionCounter = 0;
+									
+        	            		if ((staticCounter > GSENSOR_STATIC_COUNTER)&&(SysGetFlag(FL_MOVIE_TIMELAPSE_REC) == MOVIE_TIMELAPSEREC_OFF))//start time lapse recording
+        	            	    {
+        	            	    	debug_msg("magic_start time lapse recording\r\n");
+        	                	 	Ux_PostEvent(NVTEVT_RECORDING_MODE_TRIG, 1, 1);
+									nLapseRecLedOffCounter = 10;//vincent@20150919-6
+        	           	        } 
+                            }
+    			    	    else
+    			    		{
+    			            	motionCounter++;
+    		            	    staticCounter = 0;
+    		            		if ((motionCounter > GSENSOR_MOTION_COUNTER ) && (SysGetFlag(FL_MOVIE_TIMELAPSE_REC) != MOVIE_TIMELAPSEREC_OFF))//start normal recording
+    		            		{
+    		            			GPIOMap_TurnOnLCDBacklight();
+                            		debug_msg("magic_start normal recording\r\n");
+    		                		Ux_PostEvent(NVTEVT_RECORDING_MODE_TRIG, 1, 0);
+    		            	    }	
+    			    	     }
+			 	 	}
+				}
+			  break;		 
+        }
+    }
+}
+#endif
 
 #endif
 

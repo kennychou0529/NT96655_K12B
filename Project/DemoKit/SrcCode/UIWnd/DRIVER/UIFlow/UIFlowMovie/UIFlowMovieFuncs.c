@@ -19,6 +19,7 @@ static UINT32  g_MovRecSelfTimerSec = 0;
 static UINT32  g_MovRecSelfTimerID = NULL_TIMER;
 static LDWS_OSD_COORDINATE g_LdwsOsdCoord = {0};
 static BOOL  Recstatus=FALSE;//eric edit 0909-2
+extern INT32 nLapseRecLedOffCounter;
 extern void Movie_IPLChangeCB(UINT32 mode, UINT32 param);
 
 UINT8 FlowMovie_GetMovDataState(void)
@@ -262,6 +263,19 @@ void FlowMovie_OnTimer1SecIndex(void)
     case MOV_ST_REC | MOV_ST_ZOOM:
 	
         gMovData.SysTimeCount++;
+		if ((SysGetFlag(FL_MOVIE_TIMELAPSE_REC) != MOVIE_TIMELAPSEREC_OFF)
+                && (SysGetFlag(FL_LCDOffIndex) == LCDOFF_ON))//vincent@20150919-6
+        {
+        	if (nLapseRecLedOffCounter > 0)
+            {
+            	nLapseRecLedOffCounter--;
+                if (nLapseRecLedOffCounter == 0)
+                {
+                 	GPIOMap_TurnOffLCDBacklight();
+                }
+            }
+         }
+		
 	  if(Recstatus==TRUE)//eric edit 0909-2
    	  UxCtrl_SetShow(&UIFlowWndMovie_PanelCtrl,!UxCtrl_IsShow(&UIFlowWndMovie_PanelCtrl));//eric edit 0909-2
         if (UxCtrl_IsShow(&UIFlowWndMovie_YMD_StaticCtrl))

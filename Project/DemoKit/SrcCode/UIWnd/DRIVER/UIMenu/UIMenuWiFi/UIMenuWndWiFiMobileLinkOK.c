@@ -192,7 +192,6 @@ INT32 UIMenuWndWiFiMobileLinkOK_OnOpen(VControl *pCtrl, UINT32 paramNum, UINT32 
 	{
 		LcdIsWifiModeOn = 1;
 		Ux_SendEvent(&UISetupObjCtrl, NVTEVT_EXE_LCDOFF, 1, LCDOFF_ON);
-		debug_msg("magic_20151022_1\r\n");
 	}
     
     Ux_DefaultEvent(pCtrl,NVTEVT_OPEN_WINDOW,paramNum,paramArray);
@@ -276,7 +275,6 @@ INT32 UIMenuWndWiFiMobileLinkOK_OnKeyenter(VControl *pCtrl, UINT32 paramNum, UIN
 		if(SysGetFlag(FL_LCDOFF) == LCDOFF_ON )
 		{
 			Ux_SendEvent(&UISetupObjCtrl, NVTEVT_EXE_LCDOFF, 1, LcdFlag);
-			debug_msg("magic_20151022_2\r\n");
 		}
 	}
    
@@ -359,7 +357,10 @@ INT32 UIMenuWndWiFiMobileLinkOK_Authorized_OK(VControl *pCtrl, UINT32 paramNum, 
 
 INT32 UIMenuWndWiFiMobileLinkOK_OnExePhotoCapture(VControl *pCtrl, UINT32 paramNum, UINT32 *paramArray)
 {
-	debug_msg("magic_PhotoCapture1\r\n");
+	if(IPL_AlgGetUIInfo(IPL_SEL_IMAGEEFFECT) == SEL_IMAGEEFFECT_WDR)
+	{
+		IPL_AlgSetUIInfo(IPL_SEL_IMAGEEFFECT, SEL_IMAGEEFFECT_OFF);
+	}
     return UIFlowWndWiFiPhoto_OnExePhotoCapture(pCtrl, paramNum, paramArray);
 }
 INT32 UIMenuWndWiFiMobileLinkOK_OnUpdateInfo(VControl *pCtrl, UINT32 paramNum, UINT32 *paramArray)
