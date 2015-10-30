@@ -345,7 +345,7 @@ void FlowMovie_UpdateIcons(BOOL bShow)
         FlowMovie_IconDrawAudioOnOff(&UIFlowWndMovie_StatusICN_AudioCtrl);
 	 FlowMovie_IconHideParkingMonitor();	
 	 FlowMovie_IconHideLock();  //eric 文件加锁
-	 FlowMovie_IconHideTimeLapes(&UIFlowWndMovie_Status_TimeLapesCtrl);	
+	 //FlowMovie_IconHideTimeLapes(&UIFlowWndMovie_Status_TimeLapesCtrl);	
 		
     }
     else
@@ -371,12 +371,14 @@ void FlowMovie_UpdateIcons(BOOL bShow)
 	  else	
 	  FlowMovie_IconHideLock();//eric 文件加锁
 	 FlowMovie_IconDrawParkingMonitor();	
+	 #if 0
 	 if(UI_GetData(FL_MOVIE_TIMELAPSE_REC)!=MOVIE_TIMELAPSEREC_OFF)
 	 {
           FlowMovie_IconDrawTimeLapes(&UIFlowWndMovie_Status_TimeLapesCtrl);
 	  }
 	 else
 	  FlowMovie_IconHideTimeLapes(&UIFlowWndMovie_Status_TimeLapesCtrl);	
+	 #endif 
 	 
 	 if(SysGetFlag(FL_CAR_NUM)==CAR_NUM_ON)
             FlowMovie_IconDrawPlateNumber();

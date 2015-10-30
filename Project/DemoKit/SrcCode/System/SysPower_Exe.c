@@ -91,6 +91,7 @@ int SX_TIMER_DET_GPS_ID = -1;
 int SX_TIMER_DET_DELAYSHUTDOWN = -1;
 
 INT32 nLapseRecLedOffCounter = 0;//vincent@20150919-6
+UINT32 nLapseRecStatusCounter = 0;
 
 void GxCustom_DetAutoLcdoff(void);
 void GxCustom_DetDelayoff(void);
@@ -823,6 +824,7 @@ void UI_DetGsensor(void)
 												   GPIOMap_TurnOnLCDBacklight();
     		                		            	Ux_PostEvent(NVTEVT_RECORDING_MODE_TRIG, 1, 0);
 						           					bDetMOVIStatus = TRUE;
+													nLapseRecStatusCounter = 5;
     		            			          }	
                     	           }
     			    }

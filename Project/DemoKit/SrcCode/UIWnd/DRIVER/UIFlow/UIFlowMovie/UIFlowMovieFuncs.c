@@ -20,6 +20,7 @@ static UINT32  g_MovRecSelfTimerID = NULL_TIMER;
 static LDWS_OSD_COORDINATE g_LdwsOsdCoord = {0};
 static BOOL  Recstatus=FALSE;//eric edit 0909-2
 extern INT32 nLapseRecLedOffCounter;
+extern UINT32 nLapseRecStatusCounter;
 extern void Movie_IPLChangeCB(UINT32 mode, UINT32 param);
 
 UINT8 FlowMovie_GetMovDataState(void)
@@ -269,6 +270,11 @@ void FlowMovie_OnTimer1SecIndex(void)
         	if (nLapseRecLedOffCounter > 0)
             {
             	nLapseRecLedOffCounter--;
+				if(nLapseRecLedOffCounter == 29)
+				{
+						UxState_SetData(&UIFlowWndMovie_Status_TimeLapesCtrl,STATE_CURITEM,UIFlowWndMovie_Status_TimeLapes_ICON_TIMELAPSE_REC_STATUS);
+						UxCtrl_SetShow(&UIFlowWndMovie_Status_TimeLapesCtrl, TRUE);
+				}
                 if (nLapseRecLedOffCounter == 0)
                 {
                  	GPIOMap_TurnOffLCDBacklight();
@@ -282,6 +288,15 @@ void FlowMovie_OnTimer1SecIndex(void)
         {
             FlowMovie_IconDrawDateTime();
         }
+
+		if(nLapseRecStatusCounter > 0)
+			{
+				nLapseRecStatusCounter--;
+				if(nLapseRecStatusCounter == 0)
+				{
+					UxCtrl_SetShow(&UIFlowWndMovie_Status_TimeLapesCtrl, FALSE);
+				}
+			}
         break;
 
     }
