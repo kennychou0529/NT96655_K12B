@@ -774,14 +774,16 @@ INT32 System_UserKeyFilter(NVTEVT evt, UINT32 paramNum, UINT32 *paramArray)
             {
                 return NVTEVT_CONSUME;
             }
+
             if ((KeyScan_GetPlugDev() == PLUG_OFF) && !GPIOMap_IsLCDBacklightOn())
-	     {
+	     	{
                 GPIOMap_TurnOnLCDBacklight();
-		  GxLED_SetCtrl(KEYSCAN_LED_GREEN,SET_TOGGLE_LED,FALSE);
-		  GxLED_SetCtrl(KEYSCAN_LED_GREEN,TURNON_LED,TRUE);
+		  		GxLED_SetCtrl(KEYSCAN_LED_GREEN,SET_TOGGLE_LED,FALSE);
+		  		GxLED_SetCtrl(KEYSCAN_LED_GREEN,TURNON_LED,TRUE);
 
 				System_ResetPowerSaveCount();
-                }
+				
+             }
             System_ResetDetCloseLenCount();
             if(GxPower_GetControl(GXPWR_CTRL_SLEEP_LEVEL) > 1)  // drop key if sleep level > 1
             {
