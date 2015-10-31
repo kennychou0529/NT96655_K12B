@@ -1,2 +1,0 @@
-d:/MYPROJECT/K12B/12B_2015_0908/LibExt/LibExt_src/PluginPhoto/AE_AR0330P_EVB_FF/ae_AR0330P_EVB_FF.c: In function 'AE_SetMovieLog':
-d:/MYPROJECT/K12B/12B_2015_0908/LibExt/LibExt_src/PluginPhoto/AE_AR0330P_EVB_FF/ae_AR0330P_EVB_FF.c:99: warning: implicit declaration of function 'AWB_GetColorGian'

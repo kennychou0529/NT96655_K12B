@@ -59,6 +59,7 @@ static UINT32 GAcc[AE_WIN_X * AE_WIN_Y] = {0};
 /* -3, -2.7, -2.5, -2.3, -2, -1.7, -1.5, -1.3, -1, -0.7, -0.5, -0.3, 0, 0.3, 0.5, 0.7, 1, 1.3, 1.5, 1.7, 2.0, 2.3, 2.5, 2.7, 3  */
 static UINT32 EVTable[SEL_AEEV_MAX_CNT] =
 {  13, 16, 18, 20, 25, 31, 35, 40, 50, 63, 71, 79, 100, 126, 141, 159, 200, 252, 283, 317, 400, 504, 566, 635, 800};
+//{  13, 16, 18, 20, 25, 31, 35, 40, 50, 63, 71, 79, 100, 126, 141, 159, 200, 252, 283, 317, 400, 504, 566, 635, 800};
 
 static AEALG_EVENT_TAB AeAlgEventTab =
 {
@@ -67,7 +68,7 @@ static AEALG_EVENT_TAB AeAlgEventTab =
     NULL
 };
 
- 
+
 UINT32 AEAFD_START = FALSE;
 UINT32 AEAFD_CurrentFlickerType = AE_FLICKER_60HZ;
 UINT16 AfdBuffer[CA_WIN_X*CA_WIN_Y*AEAFD_DETECT_CYCLE]; //32*32*6
@@ -366,6 +367,8 @@ void AE_Process (UINT32 CurrentStatus)
     AE_setExpT(&ExpTSetting);
     AE_setIris(PrvNewAeArg.Iris);
     AE_setGain(&Gain);
+	
+	
     if (AEEventTAB.AeProcessEnd != NULL)
     {
         AEEventTAB.AeProcessEnd(PrvNewAeArg.ISOGain, PrvNewAeArg.ExpoTime);
@@ -424,7 +427,7 @@ void AE_WaitStable(UINT32 count)
 
 UINT32 AE_WriteDebugInfo(UINT32 Addr)
 {
-    Addr += sprintf((char *)Addr, "ExpectY = \t%ld\r\nAdd_Y = \t%ld\r\nLumY = \t%ld\r\n",
+    Addr += sprintf((char *)Addr, "\r\nAE Ver:20151028\r\nExpectY = \t%ld\r\nAdd_Y = \t%ld\r\nLumY = \t%ld\r\n",
                                             AeInfo.OverExpoInfo.AdjExpextY, AeInfo.OverExpoInfo.AdjY, AeInfo.LumY);
 
     Addr += sprintf((char *)Addr, "PrvEV_Value = \t%ld\r\nPrvLV = \t%ld\r\n",
@@ -438,6 +441,10 @@ UINT32 AE_WriteDebugInfo(UINT32 Addr)
 
     Addr += sprintf((char *)Addr, "Cap_ISOGain = \t%ld\r\nCap_ExpoTime = \t%ld\r\nCap_Iris = \t%ld\r\n",
                                             CapNewAeArg.ISOGain, CapNewAeArg.ExpoTime, CapNewAeArg.Iris);
+
+    Addr += sprintf((char *)Addr, "UI setting: Metermode=%d, ISO=%d, EV bios = %d, Flash=%d, Scene=%d, Freq=%d, ImgEffect=%d, WB=%d\r\n",
+                                            IPL_AlgGetUIInfo(IPL_SEL_AEMODE), IPL_AlgGetUIInfo(IPL_SEL_ISOINDEX), IPL_AlgGetUIInfo(IPL_SEL_AEEV), IPL_AlgGetUIInfo(IPL_SEL_FLASHMODE)
+                                            ,IPL_AlgGetUIInfo(IPL_SEL_SCENEMODE),IPL_AlgGetUIInfo(IPL_SEL_FREQUENCY),IPL_AlgGetUIInfo(IPL_SEL_IMAGEEFFECT),IPL_AlgGetUIInfo(IPL_SEL_WBMODE));	
     return Addr;
 }
 

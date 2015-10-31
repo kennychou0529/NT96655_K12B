@@ -520,7 +520,7 @@ void IPL_CtrlPrvInitFlowC(UINT32 Id, IPLCTRL_INFO *CtrlInfo)
     IPL_CtrlSetInfor(Id, IPLCTRL_SIE_VA_EN, DISABLE);
     IPL_CtrlSetInfor(Id, IPLCTRL_SIE_VA_BUFNUM, 0);
 
-    IPL_CtrlSetInfor(Id, IPLCTRL_SIE_ECS_EN, DISABLE);
+    IPL_CtrlSetInfor(Id, IPLCTRL_SIE_ECS_EN, ENABLE);
 
     //IPE
     IPL_CtrlSetInfor(Id, IPLCTRL_IPE_OUT_EN, DISABLE);

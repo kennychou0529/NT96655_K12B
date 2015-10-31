@@ -26,7 +26,7 @@ IFE_FILT        IQ_IFE_Filter_param;
 EdgeMap         IQ_IPE_EDMap;
 INT8            IQ_Saturation[SEL_SATURATION_MAX_CNT];
 
-SceneRender_RTXGainInfo GetRtxGainInfo;
+SceneRender_RTXGainInfo GetRtxGainInfo = {0x400,   0x400,  0x400,   0x400,   0x400,   0x400,    0x400,   0x000};
 UINT16 WDR_Racc[1024],WDR_Gacc[1024],WDR_Bacc[1024];
 void WDR_VideoGainAdjust(SceneRender_RTXGainInfo* GetRtxGainInfo);
 

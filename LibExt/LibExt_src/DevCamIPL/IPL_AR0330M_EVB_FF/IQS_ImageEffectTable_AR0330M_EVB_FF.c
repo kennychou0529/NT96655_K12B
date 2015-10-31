@@ -6,7 +6,7 @@
                                              //CbOfs CrOfs YCon CCon IntOfs SatOfs HueRotate
 IQS_COLOR_EFFECT_PARAM ColorEffectTable_Normal  = {128, 128,  128, 128,   0,     0,   FALSE };    //SEL_IMAGEEFFECT_OFF = 0,
 IQS_COLOR_EFFECT_PARAM ColorEffectTable_BW      = {128, 128,  128,   0,   0,     0,   FALSE };    //SEL_IMAGEEFFECT_BW,
-IQS_COLOR_EFFECT_PARAM ColorEffectTable_SEPIA   = {116, 144,  128,   0,   0,     0,   FALSE };    //SEL_IMAGEEFFECT_SEPIA,
+IQS_COLOR_EFFECT_PARAM ColorEffectTable_SEPIA   = {108, 146,  128,   0,   0,     0,   FALSE };    //SEL_IMAGEEFFECT_SEPIA,
 IQS_COLOR_EFFECT_PARAM ColorEffectTable_VIVID   = {128, 128,  128, 128,   0,    50,   FALSE };    //SEL_IMAGEEFFECT_VIVID,
 
 

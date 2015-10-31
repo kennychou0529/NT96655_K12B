@@ -1,5 +1,5 @@
 AE_AR0330P_EVB_FF_Data/Release/ObjectCode/ae_AR0330P_EVB_FF.o: \
- d:/MYPROJECT/K12B/12B_2015_0908/LibExt/LibExt_src/PluginPhoto/AE_AR0330P_EVB_FF/ae_AR0330P_EVB_FF.c \
+ e:/workspace/NT96655_K12B/LibExt/LibExt_src/PluginPhoto/AE_AR0330P_EVB_FF/ae_AR0330P_EVB_FF.c \
  ../../../../Include/../ThirdParty/eCos/Include/stdio.h \
  ../../../../Include/../ThirdParty/eCos/Include/pkgconf/isoinfra.h \
  ../../../../Include/../ThirdParty/eCos/Include/stddef.h \
@@ -37,7 +37,7 @@ AE_AR0330P_EVB_FF_Data/Release/ObjectCode/ae_AR0330P_EVB_FF.o: \
  ../../../../Include/Lib/DevCam/ipl_common/IPL_Utility.h \
  ../../../../Include/Common/Kernel/ErrorNo.h \
  ../../../../Include/Lib/PluginPhoto/AEAlg/Ae_alg.h \
- d:/MYPROJECT/K12B/12B_2015_0908/LibExt/LibExt_src/PluginPhoto/AE_AR0330P_EVB_FF/Ae_AR0330P_EVB_FF_int.h \
+ e:/workspace/NT96655_K12B/LibExt/LibExt_src/PluginPhoto/AE_AR0330P_EVB_FF/Ae_AR0330P_EVB_FF_int.h \
  ../../../../Include/Drv/Sensor/Sensor.h \
  ../../../../Include/Common/Type.h \
  ../../../../Include/Drv/Sensor/sensori2c.h \
@@ -196,7 +196,7 @@ AE_AR0330P_EVB_FF_Data/Release/ObjectCode/ae_AR0330P_EVB_FF.o: \
 
 ../../../../Include/Lib/PluginPhoto/AEAlg/Ae_alg.h:
 
-d:/MYPROJECT/K12B/12B_2015_0908/LibExt/LibExt_src/PluginPhoto/AE_AR0330P_EVB_FF/Ae_AR0330P_EVB_FF_int.h:
+e:/workspace/NT96655_K12B/LibExt/LibExt_src/PluginPhoto/AE_AR0330P_EVB_FF/Ae_AR0330P_EVB_FF_int.h:
 
 ../../../../Include/Drv/Sensor/Sensor.h:
 

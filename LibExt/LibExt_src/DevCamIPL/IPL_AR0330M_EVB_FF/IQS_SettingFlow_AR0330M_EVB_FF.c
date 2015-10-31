@@ -31,7 +31,7 @@ SceneRender_RTXGainInfo GetRtxGainInfo;
 UINT16 WDR_Racc[1024],WDR_Gacc[1024],WDR_Bacc[1024];
 void WDR_VideoGainAdjust(SceneRender_RTXGainInfo* GetRtxGainInfo);
 
-static char     IQS_AR0330_VerInfo[]    =  "K1220150827";//"20130325A";
+static char     IQS_AR0330_VerInfo[]    =  "20130325A";
 static char     IQS_AR0330_BuildDate[]  = __DATE__ ", " __TIME__;
 
 ///////////////////////////////////////////////
@@ -79,49 +79,23 @@ static UINT32 IQS_GetPrvIsoIndex(void)
 
     if ( ISO <= 100 )
     {
-        if ( IfeBinning == 0 )
-            IsoIdx =  PRVISO0100;
-        else
-            IsoIdx =  PRVISO0100B2;
+        IsoIdx =  PRVISO0100;
     }
     else if ( ISO <= 200 )
     {
-        if ( IfeBinning == 0 )
-            IsoIdx =  PRVISO0200;
-        else
-            IsoIdx =  PRVISO0200B2;
+        IsoIdx =  PRVISO0200;
     }
     else if ( ISO <= 400 )
     {
-        if ( IfeBinning == 0 )
-            IsoIdx =  PRVISO0400;
-        else
-            IsoIdx =  PRVISO0400B2;
+        IsoIdx =  PRVISO0400;
     }
     else if ( ISO <= 600 )
     {
-        if ( IfeBinning == 0 )
-            IsoIdx =  PRVISO0800;
-        else
-            IsoIdx =  PRVISO0800B2;
-    }
-    //else if ( ISO <= 800 )
-    else if ( ISO <= 1000 )
-    {
-        if ( IfeBinning == 0 )
-            IsoIdx =  PRVISO0800;
-        else
-            IsoIdx =  PRVISO0800B2;
+        IsoIdx =  PRVISO0800;
     }
     else
     {
-        if ( IfeBinning == 0 )
-            IsoIdx =  PRVISO1600;
-        else
-            IsoIdx =  PRVISO1600B2;
-
-        if (AE_getCurLum(8) < 8 && IfeBinning == 1)
-            IsoIdx =  PRVLOWLIGHT;
+        IsoIdx =  PRVISO1600;
     }
 
     DBG_IND("ISO = %d, Idx = %d\r\n", ISO, IsoIdx);
@@ -164,78 +138,38 @@ static BOOL IQS_GetIsoRange( UINT32 MsgID, UINT32 *iso, UINT32 *isoL, UINT32 *is
     {
         *isoL = 50;
         *isoH = 100;
-        if ( IfeBinning == 0 )
-        {
-            *ISO_IdxL =  PRVISO0100;
-            *ISO_IdxH =  PRVISO0100;
-        }
-        else
-        {
-            *ISO_IdxL =  PRVISO0100B2;
-            *ISO_IdxH =  PRVISO0100B2;
-        }
+        *ISO_IdxL =  PRVISO0100;
+        *ISO_IdxH =  PRVISO0100;
     }
     else if ( *iso <= 200 )
     {
         *isoL = 100;
         *isoH = 200;
-        if ( IfeBinning == 0 )
-        {
-            *ISO_IdxL =  PRVISO0100;
-            *ISO_IdxH =  PRVISO0200;
-        }
-        else
-        {
-            *ISO_IdxL =  PRVISO0100B2;
-            *ISO_IdxH =  PRVISO0200B2;
-        }
+        *ISO_IdxL =  PRVISO0100;
+        *ISO_IdxH =  PRVISO0200;
     }
     else if ( *iso <= 400 )
     {
         *isoL = 200;
         *isoH = 400;
-        if ( IfeBinning == 0 )
-        {
-            *ISO_IdxL =  PRVISO0200;
-            *ISO_IdxH =  PRVISO0400;
-        }
-        else
-        {
-            *ISO_IdxL =  PRVISO0200B2;
-            *ISO_IdxH =  PRVISO0400B2;
-        }
+        *ISO_IdxL =  PRVISO0200;
+        *ISO_IdxH =  PRVISO0400;
     }
-    else if ( *iso <= 600 )
+    else if ( *iso <= 800 )
     {
         *isoL = 400;
-        *isoH = 600;
-        if ( IfeBinning == 0 )
-        {
-            *ISO_IdxL =  PRVISO0400;
-            *ISO_IdxH =  PRVISO0800;
-        }
-        else
-        {
-            *ISO_IdxL =  PRVISO0400B2;
-            *ISO_IdxH =  PRVISO0600B2;
-        }
+        *isoH = 800;
+        *ISO_IdxL =  PRVISO0400;
+        *ISO_IdxH =  PRVISO0800;
     }
+    //else if ( *iso <= 1600 )
     else
     {
-        *isoL = 600;
-        *isoH = 800;
-        if ( IfeBinning == 0 )
-        {
-            *ISO_IdxL =  PRVISO0800;
-            *ISO_IdxH =  PRVISO1600;
-        }
-        else
-        {
-            *ISO_IdxL =  PRVISO0800B2;
-            *ISO_IdxH =  PRVISO1600B2;
-        }
+        *isoL = 800;
+        *isoH = 1600;
+        *ISO_IdxL =  PRVISO0800;
+        *ISO_IdxH =  PRVISO1600;
     }
-
     return TRUE;
 }
 
@@ -511,20 +445,9 @@ static ER IFE_IQparam(IQS_FLOW_MSG MsgID, IFE_SUBFUNC *subf,IPL_HAL_GROUP* group
         IQ_IFE_Filter_param.Range.B.Delta = IQS_Intpl((int)iso, (int)IFE_Filter_param[ISO_IdxL].Range.B.Delta, (int)IFE_Filter_param[ISO_IdxH].Range.B.Delta, (int)isoL, (int)isoH);
         IQ_IFE_Filter_param.Range.Bilat_w = IQS_Intpl((int)iso, (int)IFE_Filter_param[ISO_IdxL].Range.Bilat_w, (int)IFE_Filter_param[ISO_IdxH].Range.Bilat_w, (int)isoL, (int)isoH);
 
-        for ( i = 0; i < 4; i++ )
-        {
-            IQ_IFE_rngth_NLM[i] = IQS_Intpl((int)iso, (int)IFE_rngth_NLM[ISO_IdxL][i], (int)IFE_rngth_NLM[ISO_IdxH][i], (int)isoL, (int)isoH);
-            IQ_IFE_rngth_Bil[i] = IQS_Intpl((int)iso, (int)IFE_rngth_Bil[ISO_IdxL][i], (int)IFE_rngth_Bil[ISO_IdxH][i], (int)isoL, (int)isoH);
-        }
-        //DBG_ERR("%d %d %d %d %d\r\n", iso, ISO_IdxL, ISO_IdxH, isoL, isoH);
-        //DBG_ERR("Range %d %d %d\r\n", IQ_IFE_Filter_param.Range.A.Delta, IQ_IFE_Filter_param.Range.B.Delta, IQ_IFE_Filter_param.Range.Bilat_w);
-        //DBG_ERR("IQ_IFE_rngth_NLM %d %d %d %d\r\n", IQ_IFE_rngth_NLM[0], IQ_IFE_rngth_NLM[1], IQ_IFE_rngth_NLM[2], IQ_IFE_rngth_NLM[3]);
-        //DBG_ERR("IQ_IFE_rngth_Bil %d %d %d %d\r\n", IQ_IFE_rngth_Bil[0], IQ_IFE_rngth_Bil[1], IQ_IFE_rngth_Bil[2], IQ_IFE_rngth_Bil[3]);
     }
     else
     {
-        memcpy(IQ_IFE_rngth_NLM, IFE_rngth_NLM[ISO_Value], sizeof(UINT32)*4);
-        memcpy(IQ_IFE_rngth_Bil, IFE_rngth_Bil[ISO_Value], sizeof(UINT32)*4);
         memcpy(&IQ_IFE_Filter_param, &IFE_Filter_param[ISO_Value], sizeof(IFE_FILT));
     }
 
@@ -615,11 +538,6 @@ static ER IPE_IQparam(IQS_FLOW_MSG MsgID, IPE_SUBFUNC *subf,IPL_HAL_GROUP* group
         for ( i = 0; i < SEL_SATURATION_MAX_CNT; i++ )
         {
             IQ_Saturation[i] = IQS_Intpl((int)iso, (int)Saturation[ISO_IdxL][i], (int)Saturation[ISO_IdxH][i], (int)isoL, (int)isoH);
-        }
-        memcpy(IQ_Contrast, Contrast[ISO_Value], sizeof(INT8)*2);
-        for ( i = 0; i < 2; i++ )
-        {
-            IQ_Contrast[i] = IQS_Intpl((int)iso, (int)Contrast[ISO_IdxL][i], (int)Contrast[ISO_IdxH][i], (int)isoL, (int)isoH);
         }
 
         //DBG_ERR("%d %d %d %d %d %d\r\n", iso, IQ_IPE_EdgeEnh.EnhN, IQ_IPE_EdgeEnh.EnhP, IQ_IPE_EDMap.EthrL, IQ_IPE_EDMap.EtabL, IQ_Saturation[1]);
@@ -759,7 +677,7 @@ static ER IPE_IQparam(IQS_FLOW_MSG MsgID, IPE_SUBFUNC *subf,IPL_HAL_GROUP* group
             IQ_IPE_Cctrl.EdgTab_TblAddr = (UINT32)IPE_edgTab;
             IQ_IPE_Cctrl.DDSTab_TblAddr = (UINT32)IPE_ddsTab;
             IQ_IPE_Cctrl.IntOfs = ColorEffectTable_Normal.IntOfs;
-            IQ_IPE_Cctrl.SatOfs = (ColorEffectTable_Normal.SatOfs + IQ_Saturation[Saturation_Value]);
+            IQ_IPE_Cctrl.SatOfs = (ColorEffectTable_Normal.SatOfs  // + IQ_Saturation[Saturation_Value]);
             IQ_IPE_Cctrl.HueRotateEn = ColorEffectTable_Normal.HueRotateEn;
             IQ_IPE_Cctrl.Suppress.EdgSel = ESD_OUT;
             IQ_IPE_Cctrl.Suppress.VdetDiv = 0x60;
@@ -770,8 +688,8 @@ static ER IPE_IQparam(IQS_FLOW_MSG MsgID, IPE_SUBFUNC *subf,IPL_HAL_GROUP* group
             /////////////////
             IQ_IPE_CbCrofs.Cbofs = ColorEffectTable_Normal.CbOfs;
             IQ_IPE_CbCrofs.Crofs = ColorEffectTable_Normal.CrOfs;
-            IQ_IPE_YCCcon.YCon   = ColorEffectTable_Normal.YCon + IQ_Contrast[0];
-            IQ_IPE_YCCcon.UVCon  = ColorEffectTable_Normal.CCon + IQ_Contrast[1];
+            IQ_IPE_YCCcon.YCon   = ColorEffectTable_Normal.YCon  // + IQ_Contrast[0];
+            IQ_IPE_YCCcon.UVCon  = ColorEffectTable_Normal.CCon //  + IQ_Contrast[1];
             subf->pCbCrofs = &IQ_IPE_CbCrofs;
             subf->pYCCcon = &IQ_IPE_YCCcon;
 
@@ -843,7 +761,7 @@ static ER IPE_IQparam(IQS_FLOW_MSG MsgID, IPE_SUBFUNC *subf,IPL_HAL_GROUP* group
                     break;
                 case SEL_IMAGEEFFECT_VIVID:
                     subf->pCctrl->IntOfs = ColorEffectTable_VIVID.IntOfs;
-                    subf->pCctrl->SatOfs = (ColorEffectTable_VIVID.SatOfs + IQ_Saturation[Saturation_Value]);
+                    subf->pCctrl->SatOfs = (ColorEffectTable_VIVID.SatOfs  //  + IQ_Saturation[Saturation_Value]);
                     subf->pCctrl->HueRotateEn = ColorEffectTable_VIVID.HueRotateEn;
                     subf->pCctrl->Suppress.EdgSel = ESD_OUT;
                     subf->pCctrl->Suppress.VdetDiv = 0x60;
@@ -1729,17 +1647,9 @@ UINT32 IQS_CAPPRI_IsRetinexEn(void)
 
 void IQS_GetBinningFactor(UINT32 *PrvBin, UINT32 *CapBin)
 {
-    *CapBin = *PrvBin = 0;
-
-    UINT32 ISO, ExpT, Iris;
-    AE_GetPrvAEArg(&ISO, &ExpT, &Iris);
-    if ( ISO > 400 )
-        *PrvBin = 1;
-    else if ( ISO < 200 )
-        *PrvBin = 0;
-    else
-        *PrvBin = IfeBinning;
-    *CapBin = *PrvBin;
+    *PrvBin = 0;
+    *CapBin = 0;
+//    DBG_ERR("need to be reviewed\r\n");
 }
 
 

@@ -1,5 +1,5 @@
 AWB_AR0330P_EVB_FF_Data/Release/ObjectCode/awb_AR0330P_EVB_FF.o: \
- d:/MYPROJECT/K12B/12B_2015_0908/LibExt/LibExt_src/PluginPhoto/AWB_AR0330P_EVB_FF/awb_AR0330P_EVB_FF.c \
+ e:/workspace/NT96655_K12B/LibExt/LibExt_src/PluginPhoto/AWB_AR0330P_EVB_FF/awb_AR0330P_EVB_FF.c \
  ../../../../Include/../ThirdParty/eCos/Include/stdio.h \
  ../../../../Include/../ThirdParty/eCos/Include/pkgconf/isoinfra.h \
  ../../../../Include/../ThirdParty/eCos/Include/stddef.h \
@@ -34,7 +34,7 @@ AWB_AR0330P_EVB_FF_Data/Release/ObjectCode/awb_AR0330P_EVB_FF.o: \
  ../../../../Include/Common/Platform.h \
  ../../../../Include/Common/Kernel/mIType.h \
  ../../../../Include/Lib/PluginPhoto/AWBAlg/Awb_alg.h \
- d:/MYPROJECT/K12B/12B_2015_0908/LibExt/LibExt_src/PluginPhoto/AWB_AR0330P_EVB_FF/Awb_AR0330P_EVB_FF_int.h \
+ e:/workspace/NT96655_K12B/LibExt/LibExt_src/PluginPhoto/AWB_AR0330P_EVB_FF/Awb_AR0330P_EVB_FF_int.h \
  ../../../../Include/LibExt/PluginPhoto/AWB/Awb_Api.h \
  ../../../../Include/Lib/DevCam/ipl_common/IPL_AlgInfor.h \
  ../../../../Include/Lib/DevCam/ipl_common/IPL_Utility.h \
@@ -175,7 +175,7 @@ AWB_AR0330P_EVB_FF_Data/Release/ObjectCode/awb_AR0330P_EVB_FF.o: \
 
 ../../../../Include/Lib/PluginPhoto/AWBAlg/Awb_alg.h:
 
-d:/MYPROJECT/K12B/12B_2015_0908/LibExt/LibExt_src/PluginPhoto/AWB_AR0330P_EVB_FF/Awb_AR0330P_EVB_FF_int.h:
+e:/workspace/NT96655_K12B/LibExt/LibExt_src/PluginPhoto/AWB_AR0330P_EVB_FF/Awb_AR0330P_EVB_FF_int.h:
 
 ../../../../Include/LibExt/PluginPhoto/AWB/Awb_Api.h:
 

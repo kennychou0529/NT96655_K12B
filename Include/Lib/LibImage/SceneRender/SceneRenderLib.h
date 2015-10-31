@@ -115,6 +115,7 @@ extern ER SR_ProcessYccLCA(SceneRenderImageInfo *pImgInfo, UINT32 uiFilterTimes)
 
 
 extern ER SR_CalRTXGain(SceneRender_RTXCalInfo *pCalRtxInfo, SceneRender_RTXGainInfo *pGetRtxGainInfo);
+//extern ER SceneRender_calRTXGain(SceneRender_RTXCalInfo *pCalRtxInfo, SceneRender_RTXGainInfo *pGetRtxGainInfo);
 
 #endif
 

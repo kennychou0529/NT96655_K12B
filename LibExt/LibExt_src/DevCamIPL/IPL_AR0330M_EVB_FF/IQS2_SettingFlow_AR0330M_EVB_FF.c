@@ -30,7 +30,7 @@ SceneRender_RTXGainInfo GetRtxGainInfo;
 UINT16 WDR_Racc[1024],WDR_Gacc[1024],WDR_Bacc[1024];
 void WDR_VideoGainAdjust(SceneRender_RTXGainInfo* GetRtxGainInfo);
 
-static char     IQS_AR0330_VerInfo[]    = "20130605.02";
+static char     IQS_AR0330_VerInfo[]    = "K1220150905";//"20130605.02";
 static char     IQS_AR0330_BuildDate[]  = __DATE__ ", " __TIME__;
 
 ///////////////////////////////////////////////
@@ -1710,7 +1710,7 @@ void IQS_GetBinningFactor(UINT32 *PrvBin, UINT32 *CapBin)
 {
     *CapBin = *PrvBin = 0;
 
-#if 0
+#if 1
     UINT32 ISO, ExpT, Iris;
     AE_GetPrvAEArg(&ISO, &ExpT, &Iris);
     if ( ISO > 400 )
@@ -1752,6 +1752,7 @@ void WDR_VideoGainAdjust(SceneRender_RTXGainInfo* GetRtxGainInfo)
     else
         CalRtxInfo.IsoIdx = WDR_LOCAL_STRENGTH_5;
 
+    //SceneRender_calRTXGain(&CalRtxInfo, GetRtxGainInfo);
     SR_CalRTXGain(&CalRtxInfo, GetRtxGainInfo);
 }
 #endif

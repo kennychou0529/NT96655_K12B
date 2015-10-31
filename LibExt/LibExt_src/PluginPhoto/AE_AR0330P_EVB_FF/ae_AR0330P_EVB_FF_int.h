@@ -18,13 +18,14 @@
      @note
 */
 //@{
+
 #define AE_RATE                     3                           ///< ae rate
 #define CA_WIN_X                    32                          ///< ae window x
 #define CA_WIN_Y                    32                          ///< ae window y
 #define AE_WIN_X                    8                           ///< ae window x
 #define AE_WIN_Y                    8                           ///< ae window y
 #define AE_MAX_EV                   ((1 << 18) * 10)            ///< ae max EV
-#define AE_MIN_EV                   ((1 << 5) * 10)             ///< ae min EV
+#define AE_MIN_EV                   ((1 << 4) * 10)             ///< ae min EV
 #define AE_INIT_EV                  ((1 << 8) * 10)             ///< ae init EV
 #define AE_REDUCE_OVER_EXPO_MODE    ENABLE                      ///< reduce over exposure mode switch
 #define AE_COVER_RANGE_H            5                           ///< cover range H
@@ -33,27 +34,27 @@
 #define AE_ADJUST_RATIO_L           50                          ///< adjust ratio L
 #define AE_SMOOTH_PRV_W             5                           ///< weighting
 #define AE_SMOOTH_NEW_W             2                           ///< weighting
-#define AE_EXPECT_Y                 (30<<4)//(34<<4)//(32<<4)                     ///< expectY
+#define AE_EXPECT_Y                 (30<<4)                     ///< expectY
 #define AE_MAX_ISO                  900                         ///< max iso
 #define AE_MIN_ISO                  50                          ///< min iso
 
 #define AE_ADJ_Y_STEP               (1<<4)                      ///< adjust Y step
 #define AE_ADJ_OUTDOOR_EV           ((1 << 10) * 10)            ///< outdoor boundary
 #define AE_ADJ_INDOOR_EV            ((1 << 7) * 10)             ///< indoor boundary
-#define AE_ADJ_OUTDOOR_MAX_Y        (2<<4)//(3<<4)                      ///< adjust outdoor max y
-#define AE_ADJ_INDOOR_MAX_Y         (10<<4)                     ///< adjust indoor max y
-#define AE_ADJ_OVER_EXPO_TH         (6 * 5)                     ///< adjust over exposure threshold, 10%
+#define AE_ADJ_OUTDOOR_MAX_Y        (16<<4)                      ///< adjust outdoor max y
+#define AE_ADJ_INDOOR_MAX_Y         (8<<4)                     ///< adjust indoor max y
+#define AE_ADJ_OVER_EXPO_TH         (9 * 5)                     ///< adjust over exposure threshold, 10%
 #define AE_ADJ_UNDER_EXPO_TH        (9 * 5 / 3)                 ///< adjust under exposure threshold, 3%
 #define AE_EV_RATIO                 (100)
 #define AE_HIST_NUM                 64                          ///< historgram bin number
 
-#define AE_EXPECT_Y_NIGHT           (14<<4)                     ///< expect Y night
+#define AE_EXPECT_Y_NIGHT           (13<<4)                     ///< expect Y night
 #define AE_ADJ_EXPECT_Y_EV_U        (((1<<8) + (1<<7)) * 5)     ///< adjust expect Y, upper EV
 #define AE_ADJ_EXPECT_Y_EV_L        ((1<<6) * 10)               ///< adjust expect Y, lower EV
-#define AE_EXPECT_Y_MIN             (9<<4)                      ///< adjust expect Y, min Y
+#define AE_EXPECT_Y_MIN             (6<<4)                      ///< adjust expect Y, min Y
 
-#define AEAFD_PROC_YLUM_MAX         (60<<4)
-#define AEAFD_PROC_YLUM_MIN         (30<<4)
+#define AEAFD_PROC_YLUM_MAX         (40<<4)
+#define AEAFD_PROC_YLUM_MIN         (20<<4)
 #define AEAFD_CAStartX              0
 #define AEAFD_CAStartY              0
 #define AEAFD_CAScalingFactor       49
