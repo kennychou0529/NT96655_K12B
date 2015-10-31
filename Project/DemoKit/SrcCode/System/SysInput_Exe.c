@@ -60,7 +60,8 @@ int SX_TIMER_AUTO_INPUT_ID = -1;
 void UI_DetPwrKey(void);
 void UI_DetNormalKey(void);
 void UI_DetStatusKey(void);
-
+extern int app_check_screen_status(void);
+extern void app_set_screen_status(int val);
 #if (POWERKEY_FUNCTION == ENABLE)
 SX_TIMER_ITEM(Input_DetPKey, UI_DetPwrKey, 5, FALSE)
 #endif
@@ -783,6 +784,11 @@ INT32 System_UserKeyFilter(NVTEVT evt, UINT32 paramNum, UINT32 *paramArray)
 
 				System_ResetPowerSaveCount();
 				
+				if(((key == NVTEVT_KEY_SHUTTER2) || (key == NVTEVT_KEY_MENU)) && (app_check_screen_status() == 1))
+				{	
+					app_set_screen_status(0);
+					return NVTEVT_CONSUME;
+				}
              }
             System_ResetDetCloseLenCount();
             if(GxPower_GetControl(GXPWR_CTRL_SLEEP_LEVEL) > 1)  // drop key if sleep level > 1

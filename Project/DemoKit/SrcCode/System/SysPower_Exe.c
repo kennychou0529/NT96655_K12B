@@ -92,7 +92,7 @@ int SX_TIMER_DET_DELAYSHUTDOWN = -1;
 
 INT32 nLapseRecLedOffCounter = 0;//vincent@20150919-6
 UINT32 nLapseRecStatusCounter = 0;
-
+static int m_is_screen_status = 0;
 void GxCustom_DetAutoLcdoff(void);
 void GxCustom_DetDelayoff(void);
 
@@ -106,7 +106,8 @@ void System_DetShowADC(void);
 void GxCustom_DetDCPlug(void);
 void UI_DetGsensor(void);
 void UI_DetDelayPowerOff(void);  //eric edit
-
+int app_check_screen_status(void);
+void app_set_screen_status(int val);
 
 #if (AUTOSLEEP_FUNCTION == ENABLE)
 SX_TIMER_ITEM(GxPower_DetSleep, UI_DetAutoSleep, 50, TRUE)
@@ -998,6 +999,7 @@ void GxCustom_DetAutoLcdoff(void)
             if(GPIOMap_IsLCDBacklightOn()==TRUE)
             {
 			GPIOMap_TurnOffLCDBacklight();
+			app_set_screen_status(1);
 			GxLED_SetCtrl(KEYSCAN_LED_GREEN,SET_TOGGLE_LED,FALSE);
 			GxLED_SetCtrl(KEYSCAN_LED_GREEN,TURNON_LED,FALSE);
 
@@ -1064,3 +1066,13 @@ void UI_DetDelayPowerOff(void)
 }
 ////eric edit
 
+
+int app_check_screen_status(void)
+{
+	return m_is_screen_status;
+}
+
+void app_set_screen_status(int val)
+{
+	m_is_screen_status = val;
+}
